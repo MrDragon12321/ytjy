@@ -1,5 +1,11 @@
 # ytjy
 
+# node版本
+12.18.4
+
+# nvm下载地址
+https://github.com/coreybutler/nvm-windows/releases
+
 ## Project setup
 ```
 npm install
@@ -22,3 +28,4 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+

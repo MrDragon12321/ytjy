@@ -1,0 +1,218 @@
+@media screen and (max-width: 980px) {
+    * {
+        -webkit-tap-highlight-color: transparent;
+        -webkit-touch-callout: none;
+        // -webkit-user-select: none;
+    }
+    
+     // 需要过渡，因为在设置为mobile时有时间空隙会造成侧边栏宽度为100%
+    .layout-sider-bar { display: none; }
+    .mobile .layout-sider-bar {
+        display: block;
+        width: 100%;
+        z-index: 10;
+        position: fixed;
+        @include transition(none);
+        &.sider-bar-mini { width: 0; }
+    }
+    .container {
+     
+        .bottom-box {
+            justify-content: center;
+            .btn-group { 
+                .el-button {
+                    i { display: none; }
+                    span { margin-left: 0; }
+                }
+            }
+        }
+        .el-pager {
+           // 隐藏分页size
+            display: none;
+            li {
+                min-width: 30px;
+                margin: 0 5px;
+                background-color: #F2F4F9;
+                font-weight: normal;
+                &.active {
+                    background-color: var(--el-color-primary);
+                    color: #fff;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+   
+    :root { 
+        --base-right-padding: 10px;
+        --scroll-width: 4px;
+        --max-width: calc(100vw - 2 * var(--base-right-padding));
+        --max-width-mini: calc(100vw - 2px - 2 * var(--base-right-padding))
+    }
+    .layout-header {
+        .i-item.sider-bar-layout { display: none!important; }
+        // 展示top-tabs滚动条
+        .el-tabs__nav-scroll { 
+            overflow-x: auto;
+            &::-webkit-scrollbar { height: 0; }
+        }
+    }
+    .layout-main { -webkit-overflow-scrolling: touch; }
+    .page-container.overflow-scroll {
+        height: auto;
+        display: block;
+    }
+    .container {
+        overflow: hidden;
+     
+        .search-bars {
+            padding-bottom: 0;
+            padding-right: 0;
+            // 直接展开搜索
+            // &.search-shrink { height: auto!important; }
+            // .control-btn { display: none; }
+            // .el-input--default { width: 180px; }
+            .el-form .el-form-item__label { display: none; }
+        }
+        .el-pagination__sizes { display: none!important; }
+        .bottom-box {
+            .el-pagination { 
+                .btn-next, .btn-prev, .el-pager li {
+                    min-width: 30px;
+                    margin: 0 3px;
+                }
+            }
+            .el-pagination__jump { margin-left: 10px; }
+        }
+    }
+    .el-picker__popper, .el-cascader__dropdown {
+        max-width: var(--max-width)!important;
+        left: 12px!important;
+        right: 12px!important;
+        overflow-x: auto!important;
+    }
+    .el-picker__popper {
+        .el-date-range-picker, .el-date-picker {
+            margin: auto;
+            width: 100%;
+        }
+        .el-date-picker .el-picker-panel__content {
+            margin: auto;
+            width: 100%;
+        }
+        .el-time-panel {
+            margin: auto;
+            width: 100%;
+            max-width: 500px;
+        }
+    }
+    .el-cascader__dropdown {
+        .el-cascader-menu { flex: 1 }
+    }
+    .el-message-box, .el-dialog { 
+        min-width: auto!important;
+    }
+    .el-message-box {
+        max-width: var(--max-width-mini);
+        &.photo-view {
+            width: var(--max-width-mini)!important;
+        }
+    }
+    .el-overlay-dialog {
+        display: flex;
+        display: -webkit-flex;
+        align-items: center;
+        justify-content: center;
+        .el-dialog {
+            margin: auto;
+            max-width: var(--max-width);
+            &.dialog-large { width: 100%; }
+        }
+    }
+    .el-card { --el-card-padding: 15px; }
+    .el-popper {
+        &.is-dark {
+            max-width: var(--max-width)!important;
+            transform: translateX(10px);
+        }
+    }
+    .el-form.form-wrap {
+        .el-cascader, .el-select, .el-input { max-width: 100%; }
+    }
+}
+
+@media screen and (max-width: 450px) {
+   k
+    .el-date-editor {
+        // --el-date-editor-width: 220px;
+        // --el-date-editor-monthrange-width: 300px;
+        // --el-date-editor-daterange-width: calc(100vw - 96px);
+        // --el-date-editor-datetimerange-width: calc(100vw - 96px);
+        --el-date-editor-daterange-width: calc(100vw - 20px) - 2 * var(--base-right-padding);
+        --el-date-editor-datetimerange-width: calc(100vw - 20px) - 2 * var(--base-right-padding);
+    }
+    .container {
+      
+        .search-bars {
+            .el-form--inline .el-form-item {
+                width: 100%;
+                margin-right: 0;
+            }
+            .el-select, .el-input--default {
+                width: 100%;
+            }
+            .el-button i { 
+                display: none; 
+                & + span { margin-left: 0; }
+            }
+        }
+        .bottom-box {
+            .btn-group { 
+                .el-button {
+                    padding-left: 10px;
+                    padding-right: 10px;
+                    i { 
+                        display: block;
+                        + span { display: none; }
+                    }
+                }
+            }
+        }
+    }
+    .el-message { 
+        width: var(--max-width);
+        min-width: inherit; 
+    }
+    .el-form.form-wrap {
+        .el-form-item {
+            flex-direction: column;
+            .el-form-item__content {
+                display: flex;
+                display: -webkit-flex;
+                align-items: center;
+                // justify-content: space-between;
+            }
+            .el-cascader, .el-select, .el-input {
+                width: 100%;
+                flex: 1;
+            }
+            .el-form-item__label {
+                width: 100%!important;
+                text-align: left;
+                line-height: 100%;
+                padding-bottom: 12px;
+            }
+            &.button-item {
+                .el-form-item__content { 
+                    justify-content: flex-start;
+                    margin-left: 0px!important;
+                }
+            }
+        }
+    }
+    .el-dialog {
+        --el-dialog-width: var(--max-width)!important;
+    }
+}

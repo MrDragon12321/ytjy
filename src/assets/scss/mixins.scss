@@ -1,0 +1,90 @@
+// transition
+@mixin transition($property: null, $duration: null, $timing: null) {
+    -webkit-transition: $property $duration $timing;
+    transition: $property $duration $timing;
+  }
+  
+  // 背景渐变
+  @mixin bgGradient($type: null, $x1: null, $y1: null, $x2: null, $y2: null, $from: null, $to: null) {
+    background: -webkit-gradient($type, $x1 $y1, $x2 $y2, from($from),  to($to));
+    background: -moz-gradient($type, $x1 $y1, $x2 $y2, from($from),  to($to));
+    background: gradient($type, $x1 $y1, $x2 $y2, from($from),  to($to));
+  }
+  
+  // animation
+  @mixin animation($name: null, $duration: null, $timing-function: null, $delay: null, $iteration-count: null, $direction: null, $mode: null) {
+    -webkit-animation: $name $duration $timing-function $delay $iteration-count $direction;
+    -webkit-animation-fill-mode: $mode;
+    animation: $name $duration $timing-function $delay $iteration-count $direction;
+    animation-fill-mode: $mode;
+  }
+  
+  // 圆角
+  @mixin radius($num: null) {
+    -webkit-border-radius: $num;
+    border-radius: $num;
+  }
+  
+  // 阴影
+  @mixin box-shadow($inset: null, $h-shadow: null, $v-shadow: null, $blur: null, $spread: null, $color: null) {
+    -webkit-box-shadow: $inset $h-shadow $v-shadow $blur $spread $color;
+    -moz-box-shadow: $inset $h-shadow $v-shadow $blur $spread $color;
+    box-shadow: $inset $h-shadow $v-shadow $blur $spread $color;
+  }
+  
+  // 超边省略号
+  @mixin line-clamp($rows: null) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: $rows;
+    -webkit-box-orient: vertical;
+  }
+  
+  // flex布局
+  @mixin flex($direction: null, $content: null, $items: null) {
+    flex-direction: $direction;
+    display: flex;
+    display: -webkit-flex;
+    justify-content: $content;
+    align-items: $items;
+  }
+  
+  // box-sizing 属性
+  @mixin box-sizing($box: null) {
+    box-sizing: $box;
+    -webkit-box-sizing: $box;
+  }
+  
+  // 强制换行
+  @mixin break-all {
+    word-wrap: break-all;
+    word-break:break-all;
+    white-space: pre-line;
+  }
+  
+  // 禁止换行
+  @mixin nowrap {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  // 图片变灰
+  @mixin img_gray {
+    -webkit-filter: grayscale(100%);   
+    -moz-filter: grayscale(100%);   
+    -ms-filter: grayscale(100%);   
+    -o-filter: grayscale(100%);     
+    filter: grayscale(100%);
+    filter: gray;
+  }
+  
+  // 旋转
+  @mixin rotate($rotate: null) {
+      transform: rotate($rotate);
+      -ms-transform: rotate($rotate);
+      -moz-transform: rotate($rotate);
+      -webkit-transform: rotate($rotate);
+      -o-transform: rotate($rotate); 
+  }

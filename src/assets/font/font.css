@@ -1,0 +1,14 @@
+@font-face {
+    font-family: "DIN Condensed"; /* Project id 2851975 */
+    src: url('din-condensed/DIN-Condensed.ttf') format('truetype');
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "DIN Condensed Bold"; /* Project id 2851975 */
+    src: url('din-condensed/DIN Condensed Bold.eot'),
+         url('din-condensed/DIN Condensed Bold.eot?#iefix') format('embedded-opentype'),
+         url('din-condensed/DIN Condensed Bold.woff') format('woff'),
+         url('din-condensed/DIN Condensed Bold.ttf') format('ttf');
+    font-weight: normal;
+}

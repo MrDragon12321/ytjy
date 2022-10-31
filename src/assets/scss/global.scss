@@ -1,0 +1,78 @@
+// 背景颜色
+$background-default:green;
+// 字体默认大小
+$font-size-default:10px;
+//框架默认主题色
+$base-color-default: #1890ff;
+$base-tab-background: #F5F7FA;
+//布局背景色
+$base-layout-background: #2165F8;
+// 顶部统一高度
+$base-header-height: 58px;
+// 右侧顶部tabs标签高度
+$base-right-header-tabs: 48px;
+// 右侧顶部高度
+$base-right-header-height: $base-header-height + $base-right-header-tabs;
+// 表单行高
+$base-input-height-default: 30px;
+
+//框架默认主题色
+$base-color-default: #1890ff;
+
+// 默认字体大小
+$base-font-size-default: 13px;
+// 字体大小配置
+$base-font-size-small: 12px;
+$base-font-size-large: 14px;
+
+// 默认边框颜色
+$base-default-border-color: #EBEEF5;
+// 下拉框边框颜色
+$base-border-color: #E4E7ED;
+
+// 蓝色主题
+// 默认primary颜色
+$base-color-blue: $base-color-default;
+$base-color-blue-dark: #0066CC;
+// 文字划过颜色
+$base-color-blue-hover: #44A6FF;
+// 文字选中颜色
+$base-color-blue-active: #007EF0;
+// 经过及选中浅背景色
+$base-color-blue-bg-hover: #E7F4FF;
+// 一级导航背景渐变色1
+$base-blue-bar-bg: #006cff;
+// 一级导航背景渐变色2
+$base-blue-bar-bg2: #005EDD;
+// 一级导航文字颜色
+$base-blue-bar-color: #eeeeee;
+// 一级导航选中背景色
+$base-blue-bar-active: #2482FF;
+// 默认文本颜色
+$base-text-color: #323F45;
+// 默认文本颜色 淡
+$base-text-light-color: #5A727C;
+
+// 左侧导航未折叠时宽度
+$base-sider-width: 265px;
+// 左侧导航未折叠时宽度 - transverse 布局时
+$base-sider-width-small: 220px;
+// 左侧导航已折叠时宽度
+$base-sider-width-mini: 64px;
+// 左侧导航menu菜单宽度
+$base-sider-menu-width: $base-sider-width - $base-sider-width-mini;
+// 顶部统一高度
+$base-header-height:60px;
+// 左侧导航顶部高度
+$base-sider-header-height: 68px;
+// 右侧顶部tabs标签高度
+$base-right-header-tabs: 45px;
+// 右侧顶部高度
+$base-right-header-height: $base-header-height + $base-right-header-tabs;
+// 右侧页面主体高度
+// $base-right-main-height: calc(100vh - #{$base-right-header-height});
+// 表单行高
+$base-input-height-default: 30px;
+
+// 默认动画
+$transition: all .3s cubic-bezier(.645, .045, .355, 1);

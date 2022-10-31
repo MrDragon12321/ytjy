@@ -3,7 +3,7 @@
 # node版本
 12.18.4
 
-# nvm下载地址
+# nvm（node管理工具）下载地址
 https://github.com/coreybutler/nvm-windows/releases
 
 ## Project setup

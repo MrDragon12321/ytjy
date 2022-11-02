@@ -16,7 +16,7 @@
           @submit.prevent="loginSend(loginFrom)" ref="loginFrom">
           <!-- 用户名 -->
           <el-form-item prop="name">
-            <el-input v-model="state.formData.name" placeholder="请输入用户名1" autocomplete="off" maxlength="20" readonly
+            <el-input v-model="state.formData.name" placeholder="请输入用户名" autocomplete="off" maxlength="20" readonly
               :prefix-icon="Avatar"></el-input>
           </el-form-item>
           <!-- 密码 -->

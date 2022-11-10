@@ -41,7 +41,7 @@ export const data = {
                     'component': "/analysis/safety",
                     'meta': {
                         "title": "平安聚合统计分析",
-                        "icon": "my-icon-xs-kehu",
+                        "icon": "",
                         "short_name": "平安聚合",
                     }
                 },
@@ -51,7 +51,7 @@ export const data = {
                     'component': "/analysis/gps",
                     'meta': {
                         "title": "平安GPS上报统计",
-                        "icon": "my-icon-guanggao",
+                        "icon": "",
                         "short_name": "GPS上报",
                     }
                 },
@@ -61,7 +61,7 @@ export const data = {
                     'component': "/analysis/safetytab",
                     'meta': {
                         "title": "平安专项数据统计",
-                        "icon": "my-icon-kf-shezhi",
+                        "icon": "",
                         "short_name": "专项数据",
                     }
                 },
@@ -71,7 +71,7 @@ export const data = {
                     'component': "/analysis/service",
                     'meta': {
                         "title": "服务商时效统计分析",
-                        "icon": "my-icon-store",
+                        "icon": "",
                         "short_name": "服务商时效",
                     }
                 },
@@ -82,7 +82,7 @@ export const data = {
                     'component': "/analysis/invoice",
                     'meta': {
                         "title": "财务发票统计分析",
-                        "icon": "my-icon-seal",
+                        "icon": "",
                         "short_name": "财务发票",
                     }
                 },
@@ -92,7 +92,7 @@ export const data = {
                     'component': "/analysis/business",
                     'meta': {
                         "title": "财务业务统计分析",
-                        "icon": "my-icon-charging",
+                        "icon": "",
                         "short_name": "财务业务",
                     }
                 },

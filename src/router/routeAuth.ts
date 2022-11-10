@@ -13,12 +13,10 @@ const routeAuth = () => {
             NProgress.start()
             NProgress.show = true
         }
-        // const hasToken = getCookie('token')
-        // if (hasToken) {
+        const hasToken = getCookie('token')
+        if (hasToken) {
 
             if (store.getters['routes/addRoutes'].length) {
-
-
                 next()
             } else {
                 try {
@@ -38,10 +36,10 @@ const routeAuth = () => {
                     next({ path: '/login' })
                 }
             }
-        // } else {
-        //     if (to.path === '/login') next()
-        //     else next('/login')
-        // }
+        } else {
+            if (to.path === '/login') next()
+            else next('/login')
+        }
     })
     router.afterEach((to, from) => {
         NProgress.done()

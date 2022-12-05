@@ -2,7 +2,7 @@
     <div class="container">
         <SearchBars>
             <el-form :model="searchData" :inline="true" ref="searchFrom">
-                <el-form-item prop="customerId" label="客户:">
+                <el-form-item prop="customerId" label="客户:" v-hasPerm="['com:pingan:constomer']">
                     <el-select v-model="searchData.customerId" filterable placeholder="所有客户" clearable
                         @change="changes">
                         <el-option v-for="item in customerItemList" :key="item.id" :label="item.customName"
@@ -10,7 +10,7 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item prop="providerId" label="服务商:">
+                <el-form-item prop="providerId" label="服务商:" v-hasPerm="['com:service:get']">
                     <el-select v-model="searchData.providerId" filterable placeholder="所有服务商" clearable
                         @change="changes">
                         <el-option v-for="item in serviceItemList" :key="item.id" :label="item.prvName"
@@ -38,7 +38,7 @@
                         </el-icon>
                         <span>重置</span>
                     </el-button>
-                    <el-button type="primary" @click="exportServices">
+                    <el-button type="primary" @click="exportServices" v-hasPerm="['analysis:safetab:export']">
                         <el-icon>
                             <Download />
                         </el-icon>
@@ -48,12 +48,12 @@
             </el-form>
         </SearchBars>
         <Lists>
-            <el-table :data="tableData" border height="auto" stripe :header-cell-style="{
-              background: '#eef1f6',
-              textAlign: 'center',
-              fontSize: '8px',
-              border:'1px #e7e7eb solid'
-            }" :cell-style="{ textAlign: 'center', fontSize: '12px',border:'1px #e7e7eb solid' }" id="t_box">
+            <el-table :data="tableData" border stripe :header-cell-style="{
+                background: '#eef1f6',
+                textAlign: 'center',
+                fontSize: '8px',
+                border: '1px #e7e7eb solid'
+            }" :cell-style="{ textAlign: 'center', fontSize: '12px', border: '1px #e7e7eb solid' }" id="t_box">
                 <el-table-column prop="province" label="省份" />
                 <el-table-column prop="city" label="城市" />
                 <el-table-column prop="customName" label="客户名" />
@@ -103,6 +103,7 @@ import {
 } from "@/api/analysis";
 import { isArray } from "@/utils/validate";
 import { disabledDate, dateFormatter } from "@/utils/date";
+import { havePerm } from '@/utils/perms'
 import type { ElForm } from "element-plus";
 import { TypeObject, NumOrNull } from "@/types/global";
 import { exportTab } from '@/utils/export'
@@ -198,20 +199,25 @@ const handleDateChange = (val: any) => {
 };
 
 onBeforeMount(() => {
-    ProviderSafety()
-        .then((res) => (serviceItemList.value = res))
-        .catch((error) => error && proxy.$message.error(`${error}`));
-
-    CustomerSafety()
-        .then((res) => (customerItemList.value = res))
-        .catch((error) => error && proxy.$message.error(`${error}`));
     handleDateChange("default")
-    getData()
+    if (havePerm(['com:service:get'])) {
+        ProviderSafety()
+            .then((res) => (serviceItemList.value = res))
+            .catch((error) => error && proxy.$message.error(`${error}`));
+    }
+    if (havePerm(['com:pingan:constomer'])) {
+        CustomerSafety()
+            .then((res) => (customerItemList.value = res))
+            .catch((error) => error && proxy.$message.error(`${error}`));
+    }
+    if (havePerm(['analysis:safetab:tab'])) {
+        getData()
+    }
 });
 </script>
   
 <style lang="scss">
-test{
+test {
     background-color: #e7e7eb;
 }
 </style>

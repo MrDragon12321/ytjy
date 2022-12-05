@@ -7,15 +7,16 @@
  * @FilePath: \ytjy\src\api\router\index.ts
  */
 import request from '@/utils/request'
-import { data } from './test'
+import { data } from './real'
 /**
  * @description: 获取路由
  * @param {*}
  */
 export function getRouter() {
-  
-    
-    return Promise.resolve(data)
+    return request.get('/rbac/menus/routes').then(res => {
+        return res
+    })
+    // return Promise.resolve(data)
     // return request.get('/admin/me').then(res => res.data)
 }
 

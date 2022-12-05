@@ -1,4 +1,4 @@
-import { getCookie, setCookie, delCookie } from './cookie'
+import { getCookie, setCookie, delCookie, setAllCookie } from './cookie'
 import type { CookieValue } from '@/types/global'
 const { tokenName } = require('@/config/index.js')
 
@@ -12,8 +12,9 @@ export function getToken() {
 /**
  * @description 设置token
  */
-export function setToken(value: CookieValue) {
-    setCookie(tokenName, value, 24 * 365)
+export function setToken(value: any) {
+    setCookie(tokenName, value['access_token'], value['expires_in'] * 1)
+    setCookie('refresh_token',value['refresh_token'], value['expires_in'] * 1 + 300)//刷新token比原token多存储5分钟
 }
 
 /**
@@ -21,4 +22,5 @@ export function setToken(value: CookieValue) {
  */
 export function delToken() {
     delCookie(tokenName)
+    delCookie("refresh_token")
 }

@@ -9,8 +9,9 @@ const path = require('path')
 const resolve = dir => path.join(__dirname, dir)
 const { env, baseUrl } = require(resolve("src/config"))
 // const HtmlWebpackPlugin = require("html-webpack-plugin");
+
 module.exports = {
-  
+
   publicPath: '/',
   assetsDir: 'static',
   indexPath: 'index.html',
@@ -18,7 +19,7 @@ module.exports = {
   lintOnSave: false,  // 代码保存时进行eslint检测
   runtimeCompiler: true,
   productionSourceMap: false,
-  
+
   css: {
     requireModuleExtension: true,
     sourceMap: false, // 默认 false
@@ -33,10 +34,10 @@ module.exports = {
     }
   },
   devServer: {
-    open: false, 
+    open: false,
     host: '0.0.0.0',
     port: 30,
-    https: false,
+    // https: false,
     hotOnly: false,
     /* 本地开发环境使用代理 */
     proxy: {
@@ -46,7 +47,7 @@ module.exports = {
         changOrigin: true,
         withCredentials: true,
         pathRewrite: {
-          ['^/'+env]: ''
+          ['^/' + env]: ''
         },
 
       }

@@ -128,6 +128,7 @@
         .el-dialog {
             margin: auto;
             max-width: var(--max-width);
+            --el-dialog-width: var(--max-width) !important;
             &.dialog-large { width: 100%; }
         }
     }
@@ -144,7 +145,7 @@
 }
 
 @media screen and (max-width: 450px) {
-   k
+   
     .el-date-editor {
         // --el-date-editor-width: 220px;
         // --el-date-editor-monthrange-width: 300px;
@@ -212,7 +213,5 @@
             }
         }
     }
-    .el-dialog {
-        --el-dialog-width: var(--max-width)!important;
-    }
+  
 }

@@ -1,7 +1,7 @@
 <template>
     <el-header :class="[
-        'main_header', 
-        hiddenTabs ? 'hidden-tabs' : '', 
+        'main_header',
+        hiddenTabs ? 'hidden-tabs' : '',
     ]">
         <el-row justify="space-between" align="middle" class="header_title">
             <el-col :span="12">
@@ -12,13 +12,33 @@
                     <component :is="hiddenTabs ? Bottom : Top" />
                 </el-icon>
             </el-col>
-<!-- 
+
             <el-col :span="12">
                 <div style="display: flex;justify-content:flex-end">
                     <ShowTime />
-                    <button @click="exit">退出登录</button>
+                    <!-- <span>{{$store.getters['login/userInfo'].username}}</span>
+                    <button @click="exit">退出登录</button> -->
+                    <el-dropdown @command="handleCommandAcc">
+                        <div class="user_info">
+                            <div>{{userInfo.username}}</div>
+                            <el-icon>
+                                <ArrowDown />
+                            </el-icon>
+                        </div>
+                        <template #dropdown>
+                            <el-dropdown-menu>
+                                <el-dropdown-item command="exit">
+                                    <el-icon>
+                                        <SwitchButton />
+                                    </el-icon>
+                                    退出登录
+                                </el-dropdown-item>
+
+                            </el-dropdown-menu>
+                        </template>
+                    </el-dropdown>
                 </div>
-            </el-col> -->
+            </el-col>
         </el-row>
         <el-row justify="space-between" align="middle" class="header_tabs">
             <TabsBar />
@@ -38,9 +58,12 @@ import {
     Fold,
     Expand,
     Top,
-    Bottom
+    Bottom,
+    SwitchButton,
+    ArrowDown
 } from '@element-plus/icons-vue'
-import ShowTime from '../others/time.vue'
+import ShowTime from '../others/showtime.vue'
+// import { getCookie } from "@/utils/cookie";
 // const router=useRouter()
 const TabsBar = defineAsyncComponent(() => import('@/components/common/tabsBar.vue'))
 const { proxy } = getCurrentInstance() as any
@@ -48,12 +71,16 @@ const { $router, $store } = proxy
 
 const shrink = computed(() => $store.getters['setting/shrink'])
 
+
 //伸展收缩导航栏
 const changeShrink = () => {
     $store.dispatch("setting/setState", { 'shrink': !shrink.value })
 
 }
 
+const userInfo = computed(() => {
+    return $store.getters["login/userInfo"]
+})
 // 状态栏 [展开、收起]
 const hiddenTabs = computed<boolean>(() => {
     // store.state.setting.hideTabs
@@ -68,14 +95,21 @@ const handleHiddenTabs = (hideTabs: boolean) => {
     }, 600)
     $store.dispatch('setting/setState', { hideTabs })
 }
-const exit = () => {
-    $router.push({ path: '/login' })
-    $store.dispatch('login/logout').then(() => {
-        proxy.$router.push({ path: '/login' })
-    }).catch((error: Error) => {
-        error && proxy.$message.error(`${error}`)
-    })
+
+// 头像、账号
+const handleCommandAcc = (val: string) => {
+    if (val === "exit") {
+        $store.dispatch('login/logout').then(() => {
+            $router.push({ path: '/login' })
+        }).catch((error: any) => {
+            error && proxy.$message.error(`${error}`)
+        })
+    }
+    // else if (val === "account") {
+    //     proxy.$router.push({ path: '/system/account/index' })
+    // }
 }
+
 </script>
 
 <style lang="scss" scoped>
@@ -88,7 +122,21 @@ const exit = () => {
     padding: 0;
 
     .el-icon {
-        margin: 0 10px;
+        margin: 0 5px;
+    }
+
+    .el-dropdown {
+        color: #fff;
+    }
+
+    .user_info {
+        display: flex;
+        align-items: center;
+        text-decoration: underline;
+
+        &:hover {
+            color: rgb(236, 221, 17);
+        }
     }
 
     &.hidden-tabs-to::v-deep() {
@@ -105,10 +153,10 @@ const exit = () => {
         ::v-deep() {
             height: $base-header-height;
             transition-delay: 0s;
-
             .header_tabs {
                 transition-delay: 0s;
-                opacity: 0
+                opacity: 0;
+                display: none;
             }
         }
     }

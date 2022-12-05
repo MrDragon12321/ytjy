@@ -25,7 +25,7 @@ const handleClick: Handle = tab => {
     router.push({ path: tab.props.name })
 }
 
-const handleRemove = async (path: string): Promise<void> => {
+const handleRemove = async (path: any): Promise<void> => {
     try {
         if (topTabs.value.length <= 1) return
         const nextTab = await store.dispatch(
@@ -41,9 +41,7 @@ const handleRemove = async (path: string): Promise<void> => {
 watch(
     () => router.currentRoute.value,
     route => {
-
         if (route.path == "/login") return
-
         store.dispatch('tabs/setTopBars', route)
     }, {
     deep: true,

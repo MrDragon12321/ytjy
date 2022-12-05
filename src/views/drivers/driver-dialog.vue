@@ -44,6 +44,7 @@ import type { TypeObject, TypeFunc, DialogOptions, ElFormRules } from '@/types/g
 import type { ApiParams } from '@/types/api'
 import { validatePhone } from '@/utils/form'
 import { deepAssign, getArea } from '@/utils/util'
+import { havePerm } from '@/utils/perms'
 import type { ElForm } from 'element-plus'
 import {
     ServiceDriver,
@@ -222,7 +223,9 @@ const getService = () => {
 }
 
 onBeforeMount(() => {
-    getService()
+    if(havePerm(['drivers:driver:service'])){
+        getService()
+    }
 })
 
 </script>

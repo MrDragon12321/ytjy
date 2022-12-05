@@ -32,7 +32,7 @@ export const data = {
             "meta": {
                 "title": "平台数据分析",
                 "icon": "my-icon-transverse",
-                "short_name": "1",
+                "abbreviation": "1",
             },
             'children': [
                 {
@@ -42,7 +42,7 @@ export const data = {
                     'meta': {
                         "title": "平安聚合统计分析",
                         "icon": "",
-                        "short_name": "平安聚合",
+                        "abbreviation": "平安聚合",
                     }
                 },
                 {
@@ -52,7 +52,7 @@ export const data = {
                     'meta': {
                         "title": "平安GPS上报统计",
                         "icon": "",
-                        "short_name": "GPS上报",
+                        "abbreviation": "GPS上报",
                     }
                 },
                 {
@@ -62,7 +62,7 @@ export const data = {
                     'meta': {
                         "title": "平安专项数据统计",
                         "icon": "",
-                        "short_name": "专项数据",
+                        "abbreviation": "专项数据",
                     }
                 },
                 {
@@ -72,10 +72,10 @@ export const data = {
                     'meta': {
                         "title": "服务商时效统计分析",
                         "icon": "",
-                        "short_name": "服务商时效",
+                        "abbreviation": "服务商时效",
                     }
                 },
-               
+
                 {
                     'path': '/analysis/invoice',
                     'name': 'invoice',
@@ -83,7 +83,7 @@ export const data = {
                     'meta': {
                         "title": "财务发票统计分析",
                         "icon": "",
-                        "short_name": "财务发票",
+                        "abbreviation": "财务发票",
                     }
                 },
                 {
@@ -93,10 +93,10 @@ export const data = {
                     'meta': {
                         "title": "财务业务统计分析",
                         "icon": "",
-                        "short_name": "财务业务",
+                        "abbreviation": "财务业务",
                     }
                 },
-              
+
             ]
         },
         {
@@ -107,7 +107,7 @@ export const data = {
             'meta': {
                 "title": "虚拟司机管理",
                 "icon": "my-icon-car",
-               
+
             },
             'children': [
                 {
@@ -116,8 +116,31 @@ export const data = {
                     'component': "/drivers/driver",
                     'meta': {
                         "title": "虚拟司机管理",
-                        "icon": "my-icon-car",
-                        "short_name": "虚拟司机",
+                        "icon": "",
+                        "abbreviation": "虚拟司机",
+                    },
+                }
+            ]
+        },
+        {
+            'path': '/system',
+            'name': 'system',
+            'component': "home",
+            'redirect': 'menu',
+            'meta': {
+                "title": "系统配置",
+                "icon": "my-icon-bx-shezhi",
+
+            },
+            'children': [
+                {
+                    'path': '/system/menu',
+                    'name': 'menu',
+                    'component': "/system/menu",
+                    'meta': {
+                        "title": "菜单管理",
+                        "icon": "",
+                        "abbreviation": "菜单管理",
                     },
                 }
             ]
@@ -131,7 +154,7 @@ export const data = {
         //     "meta": {
         //         "title": "导航二",
         //         "icon": "my-icon-home2",
-        //         "short_name": "2",
+        //         "abbreviation": "2",
         //     },
         //     'children': [
         //         {
@@ -142,7 +165,7 @@ export const data = {
         //             'meta':{
         //                 "title": "page21",
         //                 "icon": "my-icon-home2",
-        //                 "short_name": "21",
+        //                 "abbreviation": "21",
         //             }
         //         },
         //         {
@@ -153,7 +176,7 @@ export const data = {
         //             'meta':{
         //                 "title": "page22",
         //                 "icon": "my-icon-home2",
-        //                 "short_name": "22",
+        //                 "abbreviation": "22",
         //             }
         //         },
         //         {
@@ -164,7 +187,7 @@ export const data = {
         //             'meta':{
         //                 "title": "page23",
         //                 "icon": "my-icon-home2",
-        //                 "short_name": "23",
+        //                 "abbreviation": "23",
         //             }
         //         }
         //     ]
@@ -178,7 +201,7 @@ export const data = {
         //     "meta": {
         //         "title": "导航一",
         //         "icon": "my-icon-home2",
-        //         "short_name": "1",
+        //         "abbreviation": "1",
         //     },
         //     'children': [
         //         {
@@ -189,7 +212,7 @@ export const data = {
         //             'meta':{
         //                 "title": "导航三",
         //                 "icon": "my-icon-home2",
-        //                 "short_name": "31",
+        //                 "abbreviation": "31",
         //             }
         //         },
 
@@ -204,7 +227,7 @@ export const data = {
         //     "meta": {
         //         "title": "导航四",
         //         "icon": "my-icon-home2",
-        //         "short_name": "1",
+        //         "abbreviation": "1",
         //     },
         //     'children': [
         //         {
@@ -215,7 +238,7 @@ export const data = {
         //             'meta':{
         //                 "title": "page41",
         //                 "icon": "my-icon-home2",
-        //                 "short_name": "41",
+        //                 "abbreviation": "41",
         //             }
         //         },
         //         {
@@ -233,7 +256,7 @@ export const data = {
         //                     'meta':{
         //                         "title": "view421",
         //                         "icon": "my-icon-home2",
-        //                         "short_name": "421",
+        //                         "abbreviation": "421",
         //                     }
         //                 },
         //                 {
@@ -245,7 +268,7 @@ export const data = {
         //                     'meta':{
         //                         "title": "view422",
         //                         "icon": "my-icon-home2",
-        //                         "short_name": "422",
+        //                         "abbreviation": "422",
         //                     }
         //                 }
 
@@ -253,7 +276,7 @@ export const data = {
         //             'meta':{
         //                 "title": "page42",
         //                 "icon": "my-icon-home2",
-        //                 "short_name": "42",
+        //                 "abbreviation": "42",
         //             }
         //         }
 

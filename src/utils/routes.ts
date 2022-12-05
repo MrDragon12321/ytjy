@@ -1,11 +1,22 @@
 import type { Route, Component } from '@/types/router'
-
-
+// import { useStore } from 'vuex'
+// const $store = useStore()
 // 格式化路由
-export function formatRoutes<T extends Route>(routes: T[]): T[] {
+export function formatRoutes<T extends Route>(routes: T[], info: any): T[] {
     const res = [] as T[]
-    const keys = ['path', 'name', 'component', 'meta', 'children', 'redirect']
-    routes.forEach(route => {
+    const keys = ['path', 'name', 'component', 'meta', 'children', 'redirect',]
+
+    let rou = [] as T[]
+    // 判断是否是超级管理员，如果leves含有1，则是超级管理员，不过滤菜单
+    if (info.levels.indexOf(1)) {
+        rou = routes.filter((v: any) => {
+            return v.meta.roles.length > 0
+        })
+    } else {
+        rou = routes
+    }
+
+    rou.forEach(route => {
         const newRoute = <T>{}
         let component = route.component as string
         if (component) {
@@ -31,12 +42,17 @@ export function formatRoutes<T extends Route>(routes: T[]): T[] {
         }
 
         if (newRoute.children) {
-            if (newRoute.children.length) newRoute.children = formatRoutes(newRoute.children)
+            if (newRoute.children.length) newRoute.children = formatRoutes(newRoute.children, info)
             else delete newRoute.children
         }
         res.push(newRoute)
-    })  
+
+
+    })
+
+
     return res
+
 }
 
 //获取默认路由
@@ -55,4 +71,20 @@ export function getDefaultRoute<T extends Route>(routes: T[], path = ''): T {
         }
     }
     return route
+}
+
+
+export function hasRoute(routes: any, path: String): Boolean {
+    for (let i = 0; i < routes.length; i++) {
+        if (routes[i].path == path) {
+            return true
+        } else {
+            if (routes[i].children && routes[i].children.length > 0) {
+                if (hasRoute(routes[i].children, path)) {
+                    return true
+                }
+            }
+        }
+    }
+    return false
 }

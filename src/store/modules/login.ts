@@ -4,6 +4,8 @@ import { getToken, setToken, delToken } from '@/utils/token'
 import { login, logout } from '@/api/login'
 import { resetRouter } from '@/router'
 import { Mutation, RootState, Action } from '@/types/store'
+import { setCookie, setAllCookie } from "@/utils/cookie";
+
 import type { ApiParams } from '@/types/api'
 import type { TypeObject } from '@/types/global'
 type State = {
@@ -13,7 +15,7 @@ type State = {
     [propName: string]: any
 }
 type MutationTree<S> = {
-    setToken: Mutation<S, string>,
+    setToken: Mutation<S, any>,
     setUserInfo: Mutation<S, object>,
     resetAll: Mutation<S, any>
 }
@@ -43,7 +45,7 @@ const getters = <GetterTree<State, RootState>>{
 
 const mutations = <MutationTree<State>>{
     setToken: (state, value) => {
-        state.token = value
+        state.token = value['access_token']
         setToken(value)
     },
     setUserInfo: (state, value) => {
@@ -62,10 +64,8 @@ const actions = <ActionTree<State>>{
     login: ({ commit }, params) => {
         return (async () => {
             try {
-               
-                
-                const { token } = await login(params)
-                commit('setToken', token)
+                const loginInfo = await login(params) as any
+                commit('setToken', loginInfo)
                 return Promise.resolve()
             } catch (error) {
                 return Promise.reject(error)

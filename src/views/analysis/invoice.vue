@@ -23,7 +23,7 @@
                         @calendar-change="handleCalendarChange">
                     </el-date-picker>
                 </el-form-item>
-                <el-form-item prop="customerId" label="客户:">
+                <el-form-item prop="customerId" label="客户:" v-hasPerm="['com:type:get']">
                     <el-select v-model="custometypeid" filterable placeholder="选择客户类型" clearable @change="ChangeType"
                         :disabled="discus">
                         <el-option v-for="item in custometypeList" :key="item.pvalue" :label="item.content"
@@ -37,7 +37,7 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item prop="providerId" label="供应商:">
+                <el-form-item prop="providerId" label="供应商:" v-hasPerm="['com:service:get']">
                     <el-select v-model="searchData.providerId" filterable placeholder="请选择供应商" clearable
                         :disabled="disprv" @change="handleSearch">
                         <el-option v-for="item in provierItemList" :key="item.id" :label="item.prvName"
@@ -58,7 +58,7 @@
                         </el-icon>
                         <span>重置</span>
                     </el-button>
-                    <el-button type="primary" @click="exportServices">
+                    <el-button type="primary" @click="exportServices" v-hasPerm="['analysis:invoice:export']">
                         <el-icon>
                             <Download />
                         </el-icon>
@@ -68,9 +68,9 @@
             </el-form>
         </SearchBars>
         <Lists>
-            <el-table :data="tableData" border height="auto" header-row-class-name="header-style"
-                :header-cell-style="{ background: '#eef1f6', textAlign: 'center', 'fontSize': '8px',border:'1px #e7e7eb solid' }"
-                :cell-style="{ textAlign: 'center', fontSize: '12px',border:'1px #e7e7eb solid' }" table-layout="auto" show-summary>
+            <el-table :data="tableData" border header-row-class-name="header-style"
+                :header-cell-style="{ background: '#eef1f6', textAlign: 'center', 'fontSize': '8px', border: '1px #e7e7eb solid' }"
+                :cell-style="{ textAlign: 'center', fontSize: '12px', border: '1px #e7e7eb solid' }" show-summary>
                 <el-table-column prop="cuName" label="客户名称" />
                 <el-table-column prop="prvName" label="供应商名称" />
                 <el-table-column prop="cuCaseNum" label="未开票数" />
@@ -95,6 +95,7 @@ import { ref, reactive, shallowRef, onBeforeMount, getCurrentInstance } from 'vu
 import { TypeObject, NumOrNull } from "@/types/global";
 import { disabledDate, dateFormatter } from "@/utils/date";
 import { isArray } from "@/utils/validate";
+import { havePerm } from '@/utils/perms'
 import type { ElForm } from "element-plus";
 import {
     getInvoiceDataList,
@@ -260,15 +261,22 @@ const getCustom = (params: any = "") => {
 }
 
 onBeforeMount(() => {
-
-    getInvoiceCustomerType()
-        .then((res) => custometypeList.value = res)
-        .catch((error) => error && proxy.$message.error(`${error}`));
-    getInvoiceProvider()
-        .then((res) => provierItemList.value = res)
-        .catch((error) => error && proxy.$message.error(`${error}`));
-    getCustom()
     handleDateChange("default");
-    getData()
+    if (havePerm(['com:type:get'])) {
+        getInvoiceCustomerType()
+            .then((res) => custometypeList.value = res)
+            .catch((error) => error && proxy.$message.error(`${error}`));
+        getCustom()
+    }
+    if (havePerm(['com:service:get'])) {
+        getInvoiceProvider()
+            .then((res) => provierItemList.value = res)
+            .catch((error) => error && proxy.$message.error(`${error}`));
+    }
+    if (havePerm(['analysis:service:tab'])) {
+        getData()
+    }
+
+
 })
 </script>

@@ -10,7 +10,7 @@
                         :clearable="false">
                     </el-date-picker>
                 </el-form-item>
-                <el-form-item prop="provinces" label="省份:">
+                <el-form-item prop="provinces" label="省份:" v-hasPerm="['com:province:get']">
                     <el-select v-model="searchData.provinces" filterable placeholder="请选择省份" clearable
                         @change="handleChange">
                         <el-option v-for="item in provinceItemList" :key="item.name" :label="item.name"
@@ -18,7 +18,7 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item prop="customerType" label="客户:">
+                <el-form-item prop="customerType" label="客户:" v-hasPerm="['com:type:get']">
                     <el-select v-model="searchData.customerType" filterable placeholder="选择客户类型" clearable
                         @change="ChangeType">
                         <el-option v-for="item in custometypeList" :key="item.pvalue" :label="item.content"
@@ -32,7 +32,7 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item prop="providerId" label="服务商:">
+                <el-form-item prop="providerId" label="服务商:" v-hasPerm="['com:service:get']">
                     <el-select v-model="searchData.providerId" filterable placeholder="请选择服务商" clearable
                         @change="handleChange">
                         <el-option v-for="item in providerItemList" :key="item.id" :label="item.prvName"
@@ -40,7 +40,7 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item prop="serviceItems" label="服务项目:">
+                <el-form-item prop="serviceItems" label="服务项目:" v-hasPerm="['analysis:business:serviceitem']">
                     <el-select v-model="searchData.serviceItems" filterable placeholder="所有服务项目" multiple
                         :collapse-tags="true" :collapse-tags-tooltip="true" @change="handleChange">
                         <el-option v-for="item in serviceProItemList" :key="item.id" :label="item.content"
@@ -69,7 +69,7 @@
                         </el-icon>
                         <span>重置</span>
                     </el-button>
-                    <el-button type="primary" @click="exportServices">
+                    <el-button type="primary" @click="exportServices" v-hasPerm="['analysis:business:export']">
                         <el-icon>
                             <Download />
                         </el-icon>
@@ -79,10 +79,9 @@
             </el-form>
         </SearchBars>
         <Lists>
-            <el-table :data="tableData" border height="auto" header-row-class-name="header-style"
+            <el-table :data="tableData" border header-row-class-name="header-style"
                 :header-cell-style="{ background: '#eef1f6', textAlign: 'center', 'fontSize': '8px', border: '1px #e7e7eb solid' }"
-                :cell-style="{ textAlign: 'center', fontSize: '12px', border: '1px #e7e7eb solid' }" table-layout="auto"
-                show-summary>
+                :cell-style="{ textAlign: 'center', fontSize: '12px', border: '1px #e7e7eb solid' }" show-summary>
                 <el-table-column prop="cuName" label="客户名称" />
                 <el-table-column prop="prvName" label="服务商" />
                 <el-table-column prop="serviceItem" label="服务项目" />
@@ -109,6 +108,7 @@ import { TypeObject, NumOrNull } from "@/types/global";
 import type { ElForm } from "element-plus";
 import { disabledDate, dateFormatter } from "@/utils/date";
 import { isArray } from "@/utils/validate";
+import { havePerm } from '@/utils/perms'
 import {
     getBusinessDataList,
     getBusinessCustomerType,
@@ -276,26 +276,41 @@ const getCustom = (params: any = "") => {
 }
 
 onBeforeMount(() => {
-    getBusinessProvince()
+    handleDateChange("default");
+    if(havePerm(['com:province:get'])){
+        getBusinessProvince()
         .then((res) => provinceItemList.value = res)
         .catch((error) => error && proxy.$message.error(`${error}`));
-    getBusinessCustomerType()
+    }
+    if(havePerm(['com:type:get'])){
+        getBusinessCustomerType()
         .then((res) => custometypeList.value = res)
         .catch((error) => error && proxy.$message.error(`${error}`));
-    getBusinessProvider()
+    getCustom()
+    }
+    if(havePerm(['com:service:get'])){
+        getBusinessProvider()
         .then((res: any) => {
             res.unshift({ id: "ytjy", prvName: "全部服务商" })
             providerItemList.value = res
         })
         .catch((error) => error && proxy.$message.error(`${error}`));
-    ServiceBusiness()
-        .then((res:any) => {
+    }
+    if(havePerm(['analysis:business:serviceitem'])){
+        ServiceBusiness()
+        .then((res: any) => {
             res.unshift({ id: "ytjy", content: "全部服务项目" })
             serviceProItemList.value = res
         })
         .catch((error) => error && proxy.$message.error(`${error}`));
-    getCustom()
-    handleDateChange("default");
-    getData()
+    }
+    if(havePerm(['analysis:business:tab'])){
+        getData()
+    }
+   
+   
+   
+   
+   
 })
 </script>

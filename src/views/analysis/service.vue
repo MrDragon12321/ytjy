@@ -2,22 +2,22 @@
   <div class="container">
     <SearchBars>
       <el-form :model="searchData" :inline="true" ref="searchFrom">
-        <el-form-item prop="customerNames" label="客户:">
+        <el-form-item prop="customerNames" label="客户:" v-hasPerm="['analysis:service:constomer']">
           <el-select v-model="searchData.customerNames" filterable placeholder="请选择客户" clearable @change="handleChange"
             multiple :collapse-tags="true" :collapse-tags-tooltip="true">
             <el-option v-for="item in customerItemList" :key="item.id" :label="item.customName" :value="item.id">
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item prop="prvProvince" label="服务商省份:">
+        <el-form-item prop="prvProvince" label="服务商省份:" v-hasPerm="['analysis:service:province']">
           <el-select v-model="searchData.prvProvince" filterable placeholder="请选择服务商省份" clearable
             @change="handleChange">
             <el-option v-for="item in provinceList" :key="item" :label="item" :value="item">
             </el-option>
           </el-select>
         </el-form-item>
-        
-        <el-form-item prop="prvNAMEs" label="服务商:">
+
+        <el-form-item prop="prvNAMEs" label="服务商:" v-hasPerm="['analysis:service:server']">
           <el-select v-model="searchData.prvNAMEs" filterable placeholder="请选择服务商" clearable @change="handleChange"
             multiple :collapse-tags="true" :collapse-tags-tooltip="true">
             <el-option v-for="item in providerList" :key="item" :label="item" :value="item">
@@ -25,19 +25,19 @@
           </el-select>
         </el-form-item>
         <el-form-item prop="isInterface" label="接口类型:">
-          <el-select v-model="searchData.isInterface" filterable placeholder="请选择服务商" clearable @change="handleChange">
+          <el-select v-model="searchData.isInterface" filterable placeholder="请选择接口类型" clearable @change="handleChange">
             <el-option v-for="item in InterfaceList" :key="item" :label="item.name" :value="item.value">
             </el-option>
           </el-select>
         </el-form-item>
         <el-form-item prop="isAppointMent" label="预约类型:">
-          <el-select v-model="searchData.isAppointMent" filterable placeholder="请选择服务商" clearable
+          <el-select v-model="searchData.isAppointMent" filterable placeholder="请选择预约类型" clearable
             @change="handleChange">
             <el-option v-for="item in AppointMentList" :key="item" :label="item.name" :value="item.value">
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item prop="serviceNames" label="服务项目:">
+        <el-form-item prop="serviceNames" label="服务项目:" v-hasPerm="['analysis:service:serviceitem']">
           <el-select v-model="searchData.serviceNames" filterable placeholder="请选择服务项目" clearable @change="handleChange"
             multiple :collapse-tags="true" :collapse-tags-tooltip="true">
             <el-option v-for="item in serviceItemList" :key="item[0]" :label="item[1]" :value="item[0]">
@@ -63,7 +63,7 @@
             </el-icon>
             <span>重置</span>
           </el-button>
-          <el-button type="primary" @click="exportServices">
+          <el-button type="primary" @click="exportServices" v-hasPerm="['analysis:service:export']">
             <el-icon>
               <Download />
             </el-icon>
@@ -73,7 +73,7 @@
       </el-form>
     </SearchBars>
     <Lists>
-      <el-table :data="tableData" border height="auto" :header-cell-style="{
+      <el-table :data="tableData" border :header-cell-style="{
         background: '#eef1f6',
         textAlign: 'center',
         fontSize: '8px',
@@ -106,6 +106,7 @@ import {
   getCustomers,
   getService,
   getDataList,
+  exportService
 } from "@/api/analysis";
 // import { exportService } from "@/api/export";
 import qs from "qs";
@@ -113,7 +114,7 @@ import { disabledDate, dateFormatter } from "@/utils/date";
 import type { ElForm } from "element-plus";
 import { TypeObject, NumOrNull } from "@/types/global";
 import { isArray } from "@/utils/validate";
-import { keyOf } from "element-plus/es/utils/props";
+import { havePerm } from '@/utils/perms'
 type FormInstance = InstanceType<typeof ElForm>;
 const { proxy } = getCurrentInstance() as any;
 const { env, baseUrl } = require("@/config/index.js");
@@ -155,19 +156,34 @@ const exportServices = () => {
   let datas = {
     pageNumber: currentPage,
     pageSize: pageSize,
-    prvNAME: searchData.value.prvNAMEs.toString() || "",
-    serviceName: searchData.value.serviceNames.toString() || "",
-    customIds: searchData.value.customerNames.toString() || "",
+    prvNAME: searchData.value.prvNAMEs.join('') || "",
+    serviceName: searchData.value.serviceNames.join('') || "",
+    customIds: searchData.value.customerNames.join('') || "",
   };
 
-  datas = { ...datas, ...searchData.value };
+  datas = { ...searchData.value, ...datas };
   // var temp = document.createElement("form");
   // temp.action = `${baseUrl[env]}/plat/exportData?${qs.stringify(datas)}`;
   // temp.method = "post";
   // temp.style.display = "none";
   // document.body.appendChild(temp);
   // temp.submit();
-  window.open(`${baseUrl[env]}/plat/exportData?${qs.stringify(datas)}`)
+  exportService(datas).then((res: any) => {
+    const link = document.createElement("a");
+    const blob = new Blob([res], {
+      type: "application/vnd.ms-excel;charset=utf-8",
+    });
+    link.style.display = "none";
+    link.href = URL.createObjectURL(blob);
+    link.setAttribute("download", `服务商时效统计分析.xls`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    // pageParams.value.total = res.total;
+  })
+    .catch((error) => {
+      error && proxy.$message.error(`${error}`);
+    });
 };
 const getData = () => {
   const { currentPage, pageSize } = pageParams.value;
@@ -221,23 +237,31 @@ const handleDateChange = (val: any) => {
 };
 
 onBeforeMount(() => {
-  getProvince()
-    .then((res) => (provinceList.value = res))
-    .catch((error) => error && proxy.$message.error(`${error}`));
-
-  getProvider()
-    .then((res) => (providerList.value = res))
-    .catch((error) => error && proxy.$message.error(`${error}`));
-
-  getCustomers()
-    .then((res) => (customerItemList.value = res))
-    .catch((error) => error && proxy.$message.error(`${error}`));
-
-  getService()
-    .then((res) => (serviceItemList.value = Object.entries(res)))
-    .catch((error) => error && proxy.$message.error(`${error}`));
   handleDateChange("default")
-  getData()
+  if (havePerm(['analysis:service:province'])) {
+    getProvince()
+      .then((res) => (provinceList.value = res))
+      .catch((error) => error && proxy.$message.error(`${error}`));
+  }
+  if (havePerm(['analysis:service:server'])) {
+    getProvider()
+      .then((res) => (providerList.value = res))
+      .catch((error) => error && proxy.$message.error(`${error}`));
+  }
+  if (havePerm(['analysis:service:constomer'])) {
+    getCustomers()
+      .then((res) => (customerItemList.value = res))
+      .catch((error) => error && proxy.$message.error(`${error}`));
+  }
+  if (havePerm(['analysis:service:serviceitem'])) {
+    getService()
+      .then((res) => (serviceItemList.value = Object.entries(res)))
+      .catch((error) => error && proxy.$message.error(`${error}`));
+  }
+  if (havePerm(['analysis:service:tab'])) {
+    getData()
+  }
+
 });
 </script>
 

@@ -14,7 +14,7 @@ declare namespace VueRoute {
             onlyUnAuth?: boolean,
             icon?: string,
             keep_alive?: number | boolean,
-            short_name?: string,
+            abbreviation?: string,
             roles?: string[],
             actions?: number[],
             r_tabs?: number | boolean

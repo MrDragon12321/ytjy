@@ -1,6 +1,7 @@
 
 import request from '@/utils/request'
 import type { ApiParams, ApiResponse } from '@/types/api'
+import appLoading from '@/utils/loading'
 
 /**
  * @description: 登录验证
@@ -11,11 +12,29 @@ import type { ApiParams, ApiResponse } from '@/types/api'
 //     return res.data
 // }
 export function login(params: ApiParams) {
-    return Promise.resolve({ token: "ytjy is best" })
+    const res = request.post('/auth/oauth/token', params, {
+        auth: {
+            username: 'ytjy-web',
+            password: '123456'
+        }
+    })
+    return res
+}
+
+export function refresh(params: ApiParams) {
+    // const res = request.post('/auth/oauth/token', params, {
+    //     auth: {
+    //         username: 'ytjy-web',
+    //         password: '123456'
+    //     }
+    // })
+    // return res
+    return Promise.resolve("重置成功")
 }
 
 export function getCaptchaCode() {
-    return request.post('/captchaCode', {})
+    appLoading.isShow = false // 关闭全局loading
+    return request.get('/captcha')
 }
 
 /**
@@ -27,6 +46,8 @@ export function getCaptchaCode() {
 //     return res.msg
 // }
 export function logout() {
-
-    return Promise.resolve({ "msg": "退出成功" })
+    return request.delete('/auth/oauth/logout')
+}
+export function getUserInfo() {
+    return request.get('/rbac/users/me')
 }

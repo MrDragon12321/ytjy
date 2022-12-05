@@ -13,12 +13,12 @@ export function getProvider() {
     const res = request.post('/plat/getProviders')
     return res
 }
-// 供应商
+// 客户
 export function getCustomers() {
     const res = request.post('/plat/getCustomers')
     return res
 }
-// 服务商
+// 服务项目
 export function getService() {
     const res = request.post('/plat/getServiceItems')
     return res
@@ -26,6 +26,13 @@ export function getService() {
 // 服务商时效报表数据
 export function getDataList(params: ApiParams) {
     const res = request.post('/plat/getProEffic', params)
+    return res
+}
+// 服务商时效报表导出
+export function exportService(params: ApiParams) {
+    const res = request.post('/plat/exportData',params,{
+        responseType: 'blob'
+    })
     return res
 }
 // -------------------------------------------------财务发票------------------------------

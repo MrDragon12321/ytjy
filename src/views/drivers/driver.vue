@@ -2,7 +2,7 @@
     <div class="container">
         <SearchBars>
             <el-form :model="searchData" :inline="true" ref="searchFrom">
-                <el-form-item prop="province" label="省份:">
+                <el-form-item prop="province" label="省份:" v-hasPerm="['drivers:driver:city']">
                     <el-select v-model="searchData.province" filterable placeholder="请选择省份" clearable
                         @change="changeProvince">
                         <el-option v-for="item in provinceItemList" :key="item.id" :label="item.name"
@@ -10,7 +10,7 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item prop="city" label="城市:">
+                <el-form-item prop="city" label="城市:" v-hasPerm="['drivers:driver:city']">
                     <el-select v-model="searchData.city" filterable placeholder="请选择城市" clearable
                         @change="handleSearch">
                         <el-option v-for="item in cityItemList" :key="item.id" :label="item.name" :value="item.name">
@@ -18,7 +18,7 @@
                     </el-select>
                 </el-form-item>
 
-                <el-form-item prop="facId" label="服务商:">
+                <el-form-item prop="facId" label="服务商:" v-hasPerm="['drivers:driver:service']">
                     <el-select v-model="searchData.facId" filterable placeholder="请选择服务商" clearable
                         @change="handleSearch">
                         <el-option v-for="item in serviceItemList" :key="item.prvFid" :label="item.prvName"
@@ -27,7 +27,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item prop="searchValue" label="其他:">
-                    <el-input v-model="searchData.searchValue" placeholder="手机/车牌/技师姓名" clearable  @input="handleSearch">
+                    <el-input v-model="searchData.searchValue" placeholder="手机/车牌/技师姓名" clearable @input="handleSearch">
                     </el-input>
                 </el-form-item>
                 <el-form-item>
@@ -43,14 +43,15 @@
                         </el-icon>
                         <span>重置</span>
                     </el-button>
-                    <el-button type="primary" @click="handleMenuExec(null, 'add')">
+                    <el-button type="primary" @click="handleMenuExec(null, 'add')" v-hasPerm="['drivers:driver:add']">
                         <el-icon>
                             <Plus />
                         </el-icon>
                         <span>新增</span>
                     </el-button>
 
-                    <el-upload action="" class="yt_upload el-button" :auto-upload="false" :on-change="impService">
+                    <el-upload action="" class="yt_upload el-button" :auto-upload="false" :on-change="impService"
+                        v-hasPerm="['drivers:driver:export']">
                         <el-button type="primary">
                             <el-icon>
                                 <Upload />
@@ -58,7 +59,8 @@
                             <span>导入</span>
                         </el-button>
                     </el-upload>
-                    <el-icon @click="drawer=true" v-if="showicon" style="margin-left: 8px;color:orange;font-size:15px">
+                    <el-icon @click="drawer = true" v-if="showicon"
+                        style="margin-left: 8px;color:orange;font-size:15px">
                         <Tickets />
                     </el-icon>
 
@@ -66,9 +68,10 @@
             </el-form>
         </SearchBars>
         <Lists>
-            <el-table :data="tableData" border height="auto" header-row-class-name="header-style"
-                :header-cell-style="{ background: '#eef1f6', textAlign: 'center', 'fontSize': '8px',border:'1px #e7e7eb solid' }"
-                :cell-style="{ textAlign: 'center', fontSize: '12px',border:'1px #e7e7eb solid' }" table-layout="auto">
+            <el-table :data="tableData" border header-row-class-name="header-style"
+                :header-cell-style="{ background: '#eef1f6', textAlign: 'center', 'fontSize': '8px', border: '1px #e7e7eb solid' }"
+                :cell-style="{ textAlign: 'center', fontSize: '12px', border: '1px #e7e7eb solid' }"
+                table-layout="auto">
                 <el-table-column prop="providerName" label="服务商" />
                 <el-table-column prop="driverName" label="技师姓名" />
                 <el-table-column prop="phone" label="手机号" />
@@ -77,7 +80,7 @@
                 <el-table-column prop="city" label="城市" />
                 <el-table-column prop="address" label="定位点" />
                 <el-table-column prop="content" label="状态" />
-                <el-table-column label="操作">
+                <el-table-column label="操作" v-hasPerm="['drivers:driver:edit']">
                     <template #default="{ row }">
                         <el-button type="primary" size="small" circle @click="handleMenuExec(row, 'edit')">
                             <el-icon :size="15">
@@ -104,23 +107,23 @@
                 <div class="imp_name">导入成功:</div>
                 <div class="imp_num">
                     <!-- <font color="green" size="5">{{suc}}</font>条 -->
-                    <span class="imp_d"
-                        style="color: green;font-size: 18px;font-weight: 500;margin-right: 5px;">{{suc}}</span>条
+                    <span class="imp_d" style="color: green;font-size: 18px;font-weight: 500;margin-right: 5px;">{{ suc
+                    }}</span>条
                 </div>
             </div>
             <div class="imp_single">
                 <div class="imp_name">导入失败:</div>
                 <div class="imp_num">
                     <!-- <font color="red" size="5">{{fal}}</font>条 -->
-                    <span class="imp_d"
-                        style="color: red;font-size: 18px;font-weight: 500;margin-right: 5px;">{{fal}}</span>条
+                    <span class="imp_d" style="color: red;font-size: 18px;font-weight: 500;margin-right: 5px;">{{ fal
+                    }}</span>条
 
                 </div>
             </div>
             <div class="imp_single" style="align-items: flex-start;">
                 <div class="imp_name">失败明细:</div>
                 <div class="imp_num">
-                    <div class="imp_li" v-for="(item, index) in failist" :key="index">{{item}}</div>
+                    <div class="imp_li" v-for="(item, index) in failist" :key="index">{{ item }}</div>
                 </div>
             </div>
 
@@ -146,7 +149,7 @@ import { Tickets } from '@element-plus/icons-vue' // 常用icon
 import type { DialogOptions, NumOrNull, DialogHandle, TypeObject } from '@/types/global'
 import type { ElForm } from "element-plus";
 import DriverDialog from './driver-dialog.vue'
-
+import { havePerm } from '@/utils/perms'
 type FormInstance = InstanceType<typeof ElForm>;
 const { proxy } = getCurrentInstance() as any;
 
@@ -241,11 +244,11 @@ const impService = async (file: any) => {
     }
 
 
+
+
     var formData = new FormData();
     formData.append("file", file.raw);
     if (Object.prototype.hasOwnProperty.call(data[0], '经度') && Object.prototype.hasOwnProperty.call(data[0], '纬度')) {
-
-
         ImportDriver(formData).then((res: any) => {
             suc.value = res.successNum
             fal.value = res.failNum
@@ -256,6 +259,8 @@ const impService = async (file: any) => {
         })
         return
     }
+
+
 
     var addr = [] as any[];
     const newdata: any = data.filter((nd: any) => {
@@ -311,6 +316,23 @@ const impService = async (file: any) => {
                             newdata[i]['城市'] = ""
                         }
                         if (count == addr.length) {
+                            // const sortData = [] as Object[]
+                            // newdata.forEach((v: any) => {
+                            //     sortData.push({
+                            //         '服务商': v['服务商'],
+                            //         '技师姓名': v['技师姓名'],
+                            //         '手机号': v['手机号'],
+                            //         '车牌号': v['车牌号'],
+                            //         '省份': v['省份'],
+                            //         '城市': v['城市'],
+                            //         '详细地址': v['详细地址'],
+                            //         '经度': v['经度'],
+                            //         '纬度': v['纬度'],
+                            //     })
+                            // })
+
+                            // console.log(sortData);
+
                             const workbook = xlsx.utils.book_new();
                             // 创建一个新的工作表
                             const worksheet = xlsx.utils.json_to_sheet(newdata);
@@ -400,10 +422,16 @@ const getService = () => {
 }
 
 onBeforeMount(() => {
-    getProvinces()
-    getCitys()
-    getService()
-    getData()
+    if (havePerm(['drivers:driver:city'])) {
+        getProvinces()
+        getCitys()
+    }
+    if (havePerm(['drivers:driver:service'])) {
+        getService()
+    }
+    if (havePerm(['drivers:driver:tab'])) {
+        getData()
+    }
 })
 </script>
 

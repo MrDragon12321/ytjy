@@ -4,7 +4,8 @@
 
         </div>
         <el-menu class="el-menu-vertical" :default-active="activeIndex" :router="true" :unique-opened="true"
-            :collapse="$store.getters['setting/shrink']" :collapse-transition="false" @select="handleSelect">
+            :collapse="$store.getters['setting/shrink']" :collapse-transition="false" @select="handleSelect"
+            >
             <SubMenu :childrens="children" />
         </el-menu>
     </el-scrollbar>
@@ -12,13 +13,12 @@
 
 <script lang="ts" setup>
 import SubMenu from './SubMenu.vue'
-import { computed, getCurrentInstance } from 'vue'
+import { computed, getCurrentInstance, nextTick } from 'vue'
 import { deepClone } from '@/utils/util'
 import type { Route } from '@/types/router'
 const { proxy } = getCurrentInstance() as any
 const { $router, $store } = proxy
 const routes = $store.getters['routes/addRoutes']
-
 
 const children = computed<Route[]>(() => {
     const _routes = deepClone([], routes) as Route[]
@@ -56,7 +56,7 @@ const activeIndex = computed<string>(() => {
         width: 100%;
         background-image: url("~@/assets/images/lg2.png");
         background-size: 100% 100%;
-       
+
     }
 
     .liiter-logo {

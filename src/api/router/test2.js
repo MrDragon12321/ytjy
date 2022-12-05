@@ -33,7 +33,7 @@ export const data = {
             "meta": {
                 "title": "平台数据分析",
                 "icon": "my-icon-home2",
-                "short_name": "1",
+                "abbreviation": "1",
             },
             'children': [
                 {
@@ -41,10 +41,10 @@ export const data = {
                     'name': 'service',
                     'component': "/analysis/service",
                     "icon": "my-icon-console",
-                    'meta':{
+                    'meta': {
                         "title": "服务商时统计分析",
                         "icon": "my-icon-home2",
-                        "short_name": "11",
+                        "abbreviation": "11",
                     }
                 },
                 {
@@ -52,10 +52,10 @@ export const data = {
                     'name': 'page12',
                     'component': "/show1/page12",
                     "icon": "my-icon-console",
-                    'meta':{
+                    'meta': {
                         "title": "page12",
                         "icon": "my-icon-home2",
-                        "short_name": "12",
+                        "abbreviation": "12",
                     }
                 },
                 {
@@ -63,10 +63,10 @@ export const data = {
                     'name': 'page13',
                     'component': "/show1/page13",
                     "icon": "my-icon-console",
-                    'meta':{
+                    'meta': {
                         "title": "page13",
                         "icon": "my-icon-home2",
-                        "short_name": "13",
+                        "abbreviation": "13",
                     }
                 }
             ]
@@ -80,7 +80,7 @@ export const data = {
             "meta": {
                 "title": "导航二",
                 "icon": "my-icon-home2",
-                "short_name": "2",
+                "abbreviation": "2",
             },
             'children': [
                 {
@@ -88,10 +88,10 @@ export const data = {
                     'name': 'page21',
                     'component': "/show2/page21",
                     "icon": "my-icon-console",
-                    'meta':{
+                    'meta': {
                         "title": "page21",
                         "icon": "my-icon-home2",
-                        "short_name": "21",
+                        "abbreviation": "21",
                     }
                 },
                 {
@@ -99,10 +99,10 @@ export const data = {
                     'name': 'page22',
                     'component': "/show2/page22",
                     "icon": "my-icon-console",
-                    'meta':{
+                    'meta': {
                         "title": "page22",
                         "icon": "my-icon-home2",
-                        "short_name": "22",
+                        "abbreviation": "22",
                     }
                 },
                 {
@@ -110,15 +110,15 @@ export const data = {
                     'name': 'page23',
                     'component': "/show2/page23",
                     "icon": "my-icon-console",
-                    'meta':{
+                    'meta': {
                         "title": "page23",
                         "icon": "my-icon-home2",
-                        "short_name": "23",
+                        "abbreviation": "23",
                     }
                 }
             ]
         },
-        { 
+        {
             'path': '/show3',
             'name': 'show3',
             'component': "home",
@@ -127,7 +127,7 @@ export const data = {
             "meta": {
                 "title": "导航一",
                 "icon": "my-icon-home2",
-                "short_name": "1",
+                "abbreviation": "1",
             },
             'children': [
                 {
@@ -135,13 +135,13 @@ export const data = {
                     'name': 'page31',
                     'component': "/show3/page31",
                     "icon": "my-icon-console",
-                    'meta':{
+                    'meta': {
                         "title": "导航三",
                         "icon": "my-icon-home2",
-                        "short_name": "31",
+                        "abbreviation": "31",
                     }
                 },
-               
+
             ]
         },
         {
@@ -153,7 +153,7 @@ export const data = {
             "meta": {
                 "title": "导航四",
                 "icon": "my-icon-home2",
-                "short_name": "1",
+                "abbreviation": "1",
             },
             'children': [
                 {
@@ -161,10 +161,10 @@ export const data = {
                     'name': 'page41',
                     'component': "/show4/page41",
                     "icon": "my-icon-console",
-                    'meta':{
+                    'meta': {
                         "title": "page41",
                         "icon": "my-icon-home2",
-                        "short_name": "41",
+                        "abbreviation": "41",
                     }
                 },
                 {
@@ -179,10 +179,10 @@ export const data = {
                             'name': 'view421',
                             'component': "/show4/page42/view421",
                             "icon": "my-icon-console",
-                            'meta':{
+                            'meta': {
                                 "title": "view421",
                                 "icon": "my-icon-home2",
-                                "short_name": "421",
+                                "abbreviation": "421",
                             }
                         },
                         {
@@ -190,22 +190,22 @@ export const data = {
                             'name': 'view422',
                             'component': "/show4/page42/view422",
                             "icon": "my-icon-console",
-                            
-                            'meta':{
+
+                            'meta': {
                                 "title": "view422",
                                 "icon": "my-icon-home2",
-                                "short_name": "422",
+                                "abbreviation": "422",
                             }
                         }
-                        
+
                     ],
-                    'meta':{
+                    'meta': {
                         "title": "page42",
                         "icon": "my-icon-home2",
-                        "short_name": "42",
+                        "abbreviation": "42",
                     }
                 }
-                
+
             ]
         },
     ]

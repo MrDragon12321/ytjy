@@ -9,7 +9,7 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item prop="customerId" label="客户:">
+                <el-form-item prop="customerId" label="客户:" v-hasPerm="['com:pingan:constomer']">
                     <el-select v-model="searchData.customerId" filterable placeholder="所有客户" clearable
                         @change="changes">
                         <el-option v-for="item in customerItemList" :key="item.id" :label="item.customName"
@@ -17,7 +17,7 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item prop="providerId" label="服务商:">
+                <el-form-item prop="providerId" label="服务商:" v-hasPerm="['com:service:get']">
                     <el-select v-model="searchData.providerId" filterable placeholder="所有服务商" clearable
                         @change="changes">
                         <el-option v-for="item in serviceItemList" :key="item.id" :label="item.prvName"
@@ -26,7 +26,8 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item prop="serviceItem" label="服务项目:">
-                    <el-select v-model="searchData.serviceItem" filterable placeholder="所有服务项目" clearable  @change="changes">
+                    <el-select v-model="searchData.serviceItem" filterable placeholder="所有服务项目" clearable
+                        @change="changes">
                         <el-option v-for="item in serviceProItemList" :key="item.value" :label="item.name"
                             :value="item.value">
                         </el-option>
@@ -61,7 +62,7 @@
                         </el-icon>
                         <span>重置</span>
                     </el-button>
-                    <el-button type="primary" @click="exportServices">
+                    <el-button type="primary" @click="exportServices" v-hasPerm="['analysis:safety:export']">
                         <el-icon>
                             <Download />
                         </el-icon>
@@ -71,17 +72,17 @@
             </el-form>
         </SearchBars>
         <Lists>
-            <el-table :data="tableData" border height="auto" show-summary :summary-method="getSummaries"
+            <el-table :data="tableData" border show-summary :summary-method="getSummaries"
                 header-row-class-name="header-style"
-                :header-cell-style="{ background: '#eef1f6', textAlign: 'center', 'fontSize': '8px',border:'1px #e7e7eb solid' }"
-                :cell-style="{ textAlign: 'center', fontSize: '12px',border:'1px #e7e7eb solid' }" table-layout="auto">
+                :header-cell-style="{ background: '#eef1f6', textAlign: 'center', 'fontSize': '8px', border: '1px #e7e7eb solid' }"
+                :cell-style="{ textAlign: 'center', fontSize: '12px', border: '1px #e7e7eb solid' }">
                 <el-table-column prop="customName" label="客户" />
                 <el-table-column prop="prvName" label="服务商" />
                 <el-table-column prop="caseNum" label="案件量" sortable />
                 <el-table-column prop="juheNum" label="聚合量" sortable />
                 <el-table-column prop="juhelv" label="聚合率" sortable :sort-method="jhl" />
                 <el-table-column prop="juheSuccessNum" label="聚合成功量" sortable />
-                <el-table-column prop="juheSuccesslv" label="聚合成功率" sortable :sort-method="jhsl"/>
+                <el-table-column prop="juheSuccesslv" label="聚合成功率" sortable :sort-method="jhsl" />
             </el-table>
         </Lists>
         <!-- <Bottoms>
@@ -93,13 +94,13 @@
 
 <script setup lang="ts">
 import { ref, reactive, shallowRef, onBeforeMount, getCurrentInstance } from 'vue'
+import { useStore } from 'vuex'
 import { TypeObject, NumOrNull } from "@/types/global";
-import qs from "qs";
 import type { ElForm } from "element-plus";
 import { disabledDate, dateFormatter } from "@/utils/date";
 import type { TableColumnCtx } from 'element-plus/es/components/table/src/table-column/defaults'
 import { isArray } from "@/utils/validate";
-
+import { havePerm } from '@/utils/perms'
 import {
     ProviderSafety,
     CustomerSafety,
@@ -110,6 +111,7 @@ import {
 type FormInstance = InstanceType<typeof ElForm>;
 const { env, baseUrl } = require("@/config/index.js");
 const { proxy } = getCurrentInstance() as any;
+const $store = useStore()
 const searchData = reactive({
     providerId: "",//对象
     status: "",//案件状态
@@ -134,16 +136,16 @@ const searchData = reactive({
 // })
 const tableData = ref([])
 const changes = () => {
-    
+
     getData()
 }
 // 聚合率排序
 const jhl = (a: any, b: any) => {
-    return  Number(a.juhelv.substring(0, a.juhelv.length-1)) - Number(b.juhelv.substring(0, b.juhelv.length-1))
+    return Number(a.juhelv.substring(0, a.juhelv.length - 1)) - Number(b.juhelv.substring(0, b.juhelv.length - 1))
 }
 // 聚合率排序
 const jhsl = (a: any, b: any) => {
-    return  Number(a.juheSuccesslv.substring(0, a.juheSuccesslv.length-1)) - Number(b.juheSuccesslv.substring(0, b.juheSuccesslv.length-1))
+    return Number(a.juheSuccesslv.substring(0, a.juheSuccesslv.length - 1)) - Number(b.juheSuccesslv.substring(0, b.juheSuccesslv.length - 1))
 }
 // 聚合率排序
 
@@ -153,7 +155,7 @@ const getData = () => {
     // let datas = {
     //     serviceItem: searchData.serviceItems.toString() || ""
     // };
-   
+
     let datas = { ...searchData }
 
     getSafetyList(datas).then((res: any) => {
@@ -256,9 +258,9 @@ const handleSearch = () => {
 }
 
 const exportServices = () => {
-    
 
-    
+
+
     let datas = { ...searchData }
     // var temp = document.createElement("form");
     // temp.action = `${baseUrl[env]}/report/pingAnReport/exportReportInfo?${qs.stringify(datas)}`;
@@ -289,22 +291,24 @@ const handleReset = (elForm: FormInstance | undefined) => {
 
 
 onBeforeMount(() => {
-    ProviderSafety()
-        .then((res) => (serviceItemList.value = res))
-        .catch((error) => error && proxy.$message.error(`${error}`));
-
-    CustomerSafety()
-        .then((res) => (customerItemList.value = res))
-        .catch((error) => error && proxy.$message.error(`${error}`));
-
+    handleDateChange("default");
+    if (havePerm(['com:service:get'])) {
+        ProviderSafety()
+            .then((res) => (serviceItemList.value = res))
+            .catch((error) => error && proxy.$message.error(`${error}`));
+    }
+    if (havePerm(['com:pingan:constomer'])) {
+        CustomerSafety()
+            .then((res) => (customerItemList.value = res))
+            .catch((error) => error && proxy.$message.error(`${error}`));
+    }
+    if (havePerm(['analysis:safety:tab'])) {
+        getData()
+    }
     // ServiceSafety()
     //     .then((res) => {
     //         serviceProItemList.value = res
     //     })
     //     .catch((error) => error && proxy.$message.error(`${error}`));
-
-    handleDateChange("default");
-    getData()
-
 })
 </script>

@@ -54,7 +54,7 @@
             </el-form>
         </SearchBars>
         <Lists>
-            <el-table :data="tableData" border height="auto" :header-cell-style="{
+            <el-table :data="tableData" border  :header-cell-style="{
               background: '#eef1f6',
               textAlign: 'center',
               fontSize: '8px',

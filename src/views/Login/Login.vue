@@ -15,19 +15,20 @@
         <el-form :model="state.formData" class="login_box_form" :rules="state.rules"
           @submit.prevent="loginSend(loginFrom)" ref="loginFrom">
           <!-- 用户名 -->
-          <el-form-item prop="name">
-            <el-input v-model="state.formData.name" placeholder="请输入用户名" autocomplete="off" maxlength="20" readonly
+          <el-form-item prop="username">
+            <el-input v-model="state.formData.username" placeholder="请输入用户名" autocomplete="off" maxlength="20"
               :prefix-icon="Avatar"></el-input>
           </el-form-item>
           <!-- 密码 -->
           <el-form-item prop="password">
-            
-            <el-input type="password" v-model="state.formData.password" placeholder="请输入密码" autocomplete="off" 
+
+            <el-input type="password" v-model="state.formData.password" placeholder="请输入密码" autocomplete="off"
               maxlength="20" :prefix-icon="Key" :show-password="true"></el-input>
           </el-form-item>
           <!-- 验证码 -->
-          <el-form-item prop="captcha" class="login_captcha">
-            <el-input placeholder="验证码" :prefix-icon="Edit" v-model="state.formData.captcha" maxlength="3"></el-input>
+          <el-form-item prop="verifyCode" class="login_captcha">
+            <el-input placeholder="验证码" :prefix-icon="Edit" v-model="state.formData.verifyCode" maxlength="3">
+            </el-input>
             <el-image :src="state.captchaCode" @click="getCaptcha" title="点击刷新">
               <template #error>
                 <el-icon :size="20">
@@ -38,9 +39,9 @@
           </el-form-item>
           <!-- 登录 -->
           <el-form-item class="login_btn">
-            <el-button type="primary" :loading="state.loading" native-type="submit">{{ state.loading ? '登陆中' : '登录' }} 
+            <el-button type="primary" :loading="state.loading" native-type="submit">{{ state.loading ? '登陆中' : '登录' }}
             </el-button>
-          </el-form-item> 
+          </el-form-item>
           <el-form-item prop="checked">
             <el-checkbox v-model="state.formData.checked">记住密码</el-checkbox>
           </el-form-item>
@@ -66,13 +67,13 @@ import { getCaptchaCode } from "@/api/login";
 import { getHoursTip } from '@/utils/date'
 import type { ElForm } from 'element-plus'
 const { proxy } = getCurrentInstance() as any
-
+const [store, router] = [useStore(), useRouter()]
 type FormInstance = InstanceType<typeof ElForm>
 interface FormDatas {
-  name: string,
+  username: string,
   password: string,
-  captcha: string,
-  code_key: string,
+  verifyCode: string,
+  verifyKey: string,
   checked: boolean
 }
 const loginFrom = ref<FormInstance>()
@@ -82,12 +83,13 @@ const state = reactive({
   loginFrom: null,
   componentId: "rLogin",
   formData: {
-    name: "admin",
-    password: "Aa123456!",
-    captcha: "",
-    code_key: "",
+    grant_type: "captcha",
+    username: "",
+    password: "",
+    verifyCode: "",
+    verifyKey: "",
     checked: false,
-  } as FormDatas,
+  } as any,
   rules: {
     name: [
       { required: true, message: "请输入用户名或手机号", trigger: "change" },
@@ -101,16 +103,17 @@ const state = reactive({
 });
 
 const getCaptcha = () => {
-  getCaptchaCode().then((res) => {
-    state.formData.code_key = res.data.code_key;
-    state.captchaCode = res.data.img;
+  getCaptchaCode().then((res: any) => {
+    state.formData.verifyKey = res.uuid;
+    state.captchaCode = res.img;
+
   });
 };
-// getCaptcha();
-const [store, router] = [useStore(), useRouter()]
+getCaptcha();
+
 const check = getCookie('checked') || false
 if (check) {
-  state.formData.name = getCookie('name')
+  state.formData.username = getCookie('username')
   state.formData.password = getCookie('password')
   state.formData.checked = true
 }
@@ -118,28 +121,48 @@ if (check) {
 const loginSend = (elForm: FormInstance | undefined) => {
   elForm && elForm.validate(async valid => {
     try {
-      const { checked, password, name } = state.formData
+      const { checked, password, username } = state.formData
       if (checked) {
-        setAllCookie({ name, password, checked })
+        setAllCookie({ username, password, checked })
       } else {
         clearAllCookie()
       }
       if (valid) {
         // state.loading = true
         // state.loading = false
+        var da = state.formData
+        const formData = new FormData();
+        Object.keys(da).forEach((key) => {
+          formData.append(key, da[key]);
+        });
+        try {
+          await store.dispatch("login/login", formData)
 
-        await store.dispatch("login/login", state.formData)
+          
+          const { accessedRoutes, defaultRoute } = await store.dispatch("routes/setAsyncRoutes")
+          accessedRoutes.forEach((route: any) => router.addRoute(route));
+          let path = defaultRoute ? defaultRoute.path : '/'
+          router.replace({ path })
+          if (accessedRoutes.length > 0) {
+            setTimeout(() => {
+              proxy.$notify.success({
+                title: `${getHoursTip()}好`,
+                message: store.getters['login/userInfo'].username + `, 欢迎登录元通救援平台`
+              })
+            }, 1000);
+          } else {
+            store.dispatch('login/logout').then(() => {
+              router.push({ path: '/login' })
+              proxy.$message.error("当前用户无权访问！！！")
+            }).catch((error: any) => {
+              error && proxy.$message.error(`${error}`)
+            })
+          }
+        } catch (error) {
+          getCaptcha();
+          state.formData.verifyCode = ''
+        }
 
-        const { accessedRoutes, defaultRoute } = await store.dispatch("routes/setAsyncRoutes")
-        accessedRoutes.forEach((route: any) => router.addRoute(route));
-        let path = defaultRoute ? defaultRoute.path : '/'
-        router.replace({ path })
-        setTimeout(() => {
-          proxy.$notify.success({
-            title: `${getHoursTip()}好`,
-            message: store.getters['login/userInfo'].name + `, 欢迎登录`
-          })
-        }, 1000);
       }
 
     } catch (error) {

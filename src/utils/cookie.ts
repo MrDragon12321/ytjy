@@ -16,8 +16,11 @@ const setCookie = function(key: string, value: CookieValue, expires = 0, prefix?
     expires = expires ? expires : cookie.expire
     prefix = prefix ?? cookie.prefix + "_"
     const expDate = new Date()
-    expDate.setTime(+expDate + 60 * 60 * 1000 * + expires)
+    // expDate.setTime(+expDate + 60 * 60 * 1000 * + expires)
+    expDate.setTime(expDate.getTime()+expires*1000)
     document.cookie = prefix + key + "=" + encodeURIComponent(value) + ";path=/;expires=" + expDate.toUTCString()
+
+    
 }
 
 /**

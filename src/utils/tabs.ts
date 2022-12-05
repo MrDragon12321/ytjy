@@ -29,7 +29,7 @@ export function fliterTabs(alltabs: TopTab[], tab: RouteLocation): TopTab[] {
 
         tabs.push({
             path: tab.path,
-            name: tab.meta.short_name
+            name: tab.meta.abbreviation
         })
     }
 

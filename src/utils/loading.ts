@@ -15,12 +15,14 @@ interface LoadingInstance {
 class AppLoading {
 	ajaxQueue: number
 	loading: LoadingInstance | null
-
+	isShow: boolean
 	constructor() {
 		this.ajaxQueue = 0;
 		this.loading = null;
+		this.isShow = true
 	}
 	show() {
+		if (!this.isShow) return
 		this.ajaxQueue++;
 		this.loading = ElLoading.service({
 			lock: true,

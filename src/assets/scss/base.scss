@@ -367,21 +367,17 @@ body {
 }
 
 .sider-bar-vertical {
-   
+    .el-menu--collapse {
+        width: auto;
+    }
 
     .el-sub-menu.is-active {
         .el-sub-menu__title {
-            background-color: #409eff,
-
+            background-color: #409eff;
+            color: #fff
         }
-
-        i {
-            color: #fff;
-        }
-
-       
     }
-    
+
 }
 
 .el-popover {
@@ -438,4 +434,10 @@ body {
     color: var(--el-table-text-color);
     text-align: center;
     font-weight: 600;
+}
+
+.cell-style {
+   border: '1px #e7e7eb solid';
+   text-align: center;
+   font-size: 12px;
 }

@@ -24,15 +24,7 @@ const ins = axios.create({
 
 ins.interceptors.request.use(
     config => {
-
-        // haveperm()
-        // console.log(config,config.url,config.data);
-
         if (config.url != '/captcha') config.headers!['Authorization'] = `Bearer ${store.getters['login/token']}`
-
-        // if (config.url == "/case/carVirtualGps/readExcel") {
-        //     config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
-        // }
         appLoading.show()
         return config
     },

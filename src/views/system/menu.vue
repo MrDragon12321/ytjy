@@ -31,12 +31,12 @@
             </el-form>
         </SearchBars>
         <!-- default-expand-all -->
-        <Lists> 
+        <Lists>
             <el-table :data="tableData" border header-row-class-name="header-style"
                 :header-cell-style="{ background: '#eef1f6', 'fontSize': '8px', border: '1px #e7e7eb solid' }"
                 :cell-style="{ fontSize: '12px', border: '1px #e7e7eb solid' }" row-key="id" :indent=30
-                @selection-change="handleSelectionChange" @select="selectChange"
-                @select-all="selectAllChange" ref="multiTable"  default-expand-all>
+                @selection-change="handleSelectionChange" @select="selectChange" @select-all="selectAllChange"
+                ref="multiTable">
                 <el-table-column type="selection" width="55" />
                 <el-table-column label="菜单名称" prop="name" width="250" align="left"></el-table-column>
                 <el-table-column label="菜单类型" align="center" width="150">
@@ -63,14 +63,17 @@
                 <el-table-column label="操作" align="center" width="200">
                     <template #default="scope">
                         <el-button type="success" link @click.stop="handleMenu('add', scope.row.id)"
-                            v-if="scope.row.type == 'CATALOG' || scope.row.type == 'MENU'" v-hasPerm="['system:menu:add']">
+                            v-if="scope.row.type == 'CATALOG' || scope.row.type == 'MENU'"
+                            v-hasPerm="['system:menu:add']">
                             新增
                         </el-button>
 
-                        <el-button type="primary" link @click.stop="handleMenu('edit', scope.row.id)" v-hasPerm="['system:menu:update']">
+                        <el-button type="primary" link @click.stop="handleMenu('edit', scope.row.id)"
+                            v-hasPerm="['system:menu:update']">
                             编辑
                         </el-button>
-                        <el-button type="danger" link @click.stop="handleMenu('del', scope.row.id)" v-hasPerm="['system:menu:del']">
+                        <el-button type="danger" link @click.stop="handleMenu('del', scope.row.id)"
+                            v-hasPerm="['system:menu:del']">
                             删除
                         </el-button>
                     </template>
@@ -319,17 +322,29 @@ const handleSearch = () => {
 }
 
 const cancel = () => {
-
+    formData.value = {
+        select: "",
+        parentId: "",
+        apiPath: '',
+        name: '',
+        visible: 1,
+        sort: 1,
+        abbreviation: "",
+        component: "",
+        type: 'MENU',
+        perm: "",
+        redirect: ""
+    } as MenuForm
     dataFormRef.value.resetFields();
     formData.value.select = ""
     state.dialog.visible = false;
 }
 
-const reload =async () => {
+const reload = async () => {
     const { accessedRoutes, defaultRoute } = await $store.dispatch("routes/setAsyncRoutes")
     accessedRoutes.forEach((route: any) => $router.addRoute(route));
     $store.dispatch("routes/setIsShow", false)
-    nextTick(()=>{
+    nextTick(() => {
         $store.dispatch("routes/setIsShow", true)
     })
 }
@@ -408,19 +423,7 @@ const handleMenu = async (type: String, value?: any) => {
     // var formdata = new FormData()
     // formdata.append('id', value)
     state.type = type
-    formData.value = {
-        select: "",
-        parentId: value || "",
-        apiPath: '',
-        name: '',
-        visible: 1,
-        sort: 1,
-        abbreviation: "",
-        component: "",
-        type: 'MENU',
-        perm: "",
-        redirect: ""
-    } as MenuForm
+    formData.value.parentId = value || ""
     switch (type) {
         case 'add':
             await loadMenuData();
@@ -474,7 +477,7 @@ const handleMenu = async (type: String, value?: any) => {
 
 
 onBeforeMount(() => {
-    if(havePerm(['system:menu:tab'])){
+    if (havePerm(['system:menu:tab'])) {
         getData()
     }
 });

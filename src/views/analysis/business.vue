@@ -238,8 +238,20 @@ const exportServices = () => {
         pageNumber: currentPage,
         pageSize: pageSize,
     };
+    searchData.objectType = searchData.customerId == "ytjy" ? "1" : ""
+    if (!searchData.objectType) {
+        searchData.objectType = searchData.providerId == "ytjy" ? "2" : ""
+    }
+    let dataes = {}
+
+    if (searchData.objectType == "1") {
+        dataes = { customerId: "" }                                             
+    } else if (searchData.objectType == "2") {
+        dataes = { providerId: "" }
+    }
+
     searchData.serviceItem = searchData.serviceItems.toString() || ""
-    datas = { ...datas, ...searchData }
+    datas = { ...datas, ...searchData, ...dataes }
     exportBusiness(datas).then((res: any) => {
         const link = document.createElement("a");
         const blob = new Blob([res], {

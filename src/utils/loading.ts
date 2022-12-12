@@ -25,12 +25,16 @@ class AppLoading {
 		if (!this.isShow) return
 		this.ajaxQueue++;
 		this.loading = ElLoading.service({
-			lock: true,
+			lock: false,
 			text: 'Loading',
 			background: 'rgba(0, 0, 0, 0.7)',
 		});
 	}
 	close() {
+		if (!this.isShow || !this.loading) {
+			this.isShow = true
+			return
+		}
 		this.ajaxQueue--;
 		if (this.ajaxQueue === 0) {
 			this.loading!.close();
